@@ -32,7 +32,7 @@ class Chaleur {
 ```
 On pourra encoder l'etat de la solution courante de plusieurs façons : 
 - soit un double * , qu'il faudra allouer dans le constructeur et liberer dans le destructeur
-```
+```c++
 Chaleur::Chaleur(...)
 {
 ...
@@ -44,6 +44,7 @@ Chaleur::~Chaleur()
 {
 delete [] _sol;
 }
+```
 - soit un vector<double> de la STL
 Dans les deux cas, on aura interet a utiliser un stockage plat, car les pointeurs de pointeurs sont lents en mémoire et
 les tableaux bidimensionels `double [DIM1][DIM2]` necessitent quand a eux de connaître leur taille à la compilation
