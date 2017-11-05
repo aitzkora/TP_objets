@@ -17,4 +17,4 @@ monTableau: monTableau.cpp
 # Nettoie le repertoire
 clean: 
 	@echo supprime les executables
-	@rm -f polymorphisme
+	@rm -f polymorphisme monTableau
