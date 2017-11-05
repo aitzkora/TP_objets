@@ -64,6 +64,57 @@ une méthode concat qui prend la chaine une autre chaine en argument et qui renv
 
 Héritage 
 --------
-L'héritage est un concept de la POO qui permet de factoriser du code et des données entre des classes différentes. Elle permet
-de dire qu'une classe fille
+L'héritage est un concept de la POO qui permet de partager du code et des attributs entre des classes differentes, sous la 
+contrainte que l'une de ces classes est une spécialisation de l'autre (on parle alors de _classe fille_ ou _sous classe_) ou 
+que l'autre est une généralisation de la première (on parle alors de _classe mère_ ou _classe de base_ ou encore _super-classe_)
+du point de vue de ce que l'on souhaite modèliser dans le langage
+Prenons un exemple simple. On veut simuler des véhicules : par exemple des voitures, des camions et des tanks.
+On peut imaginer faire une classe de base comme ceci
+
+     
+     class Vehicule {
+      Moteur _m  
+      array<Roue, 4> _roues;
+      public:
+          Vehicule(const Moteur & m, const Roue & r) : _m(m), _roues({r,r,r,r}) {}
+          ~Vehicule(){}
+          void demarrer()  {...}
+          void arreter() {...}
+     }
+
+On peut factoriser dans cette classe les attributs et les méthodes que doivent partager les voitures, les camions et les tanks.
+Ainsi la classe camion pour correspondre  à 
+    
+
+    class Camion : public Vehicule {
+    Benne _benne;
+    public:
+        camion(const Moteur &m, const Roue & r, const Benne & b): Vehicule(m,r), _benne(b) {}
+        ~camion() {}
+        void dechargerLaBenne() {...}
+   }
+
+On pourra lorsque qu'on crée un camion, appeler les méthode suivantes
+
+     Moteur m(12);
+     Roue r("bibendum");
+     Benne b("à ordures");
+     Camion monCamion(m,r,b);
+     monCamion.demarrer() // OK
+     monCamion.dechargerLaBenne(); // OK
+     monCamion.arreter() //OK
+
+par contre un objet `Vehicule` ne pourrait pas appeler `dechargerLaBenne` puisque qu'elle est définie seulement dans la classe
+fille
+
+     Moteur m(42);
+     Roue r("bibendum");
+     Vehicule monVehicule(m,r);
+     monVehicule.demarrer() // OK
+     monVehicule.arreter() //OK
+     monVehicule.dechargerLaBenne(); // Erreur
+
+Polymorphisme
+-------------
+
 
