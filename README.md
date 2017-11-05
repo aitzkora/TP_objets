@@ -85,7 +85,7 @@ On peut imaginer faire une classe de base comme ceci
 On peut factoriser dans cette classe les attributs et les méthodes que doivent partager les voitures, les camions et les tanks.
 Ainsi la classe camion pour correspondre  à 
     
-
+```c++
     class Camion : public Vehicule {
     Benne _benne;
     public:
@@ -93,6 +93,7 @@ Ainsi la classe camion pour correspondre  à
         ~camion() {}
         void dechargerLaBenne() {...}
    }
+```
 
 On pourra lorsque qu'on crée un camion, appeler les méthode suivantes
 
@@ -116,5 +117,33 @@ fille
 
 Polymorphisme
 -------------
+Le polymorphisme est le troisième principe de base de la POO. Il permet a une même méthode d'avoir une implémentation différente dans des classes 
+différente toute en gardant la même signature. Notons que ce comportement ne peut avoir lieu que sur des objets dynamiques (references ou pointeurs).
+Imaginons que l'on veuille rajouter une méthode `Tourner` dans la classe `Vehicule`. Il est clair que pour un tank ou une voiture, l'implémentation
+doit être différente. Ainsi on va déclarer une méthode virtuelle `Tourner` dans `Vehicule`
+
+```c++
 
 
+enum class Direction { Gauche , Droite };
+
+class Vehicule {
+    ....
+public:
+    Vehicule(const Moteur & m, const Roue & r) : _m(m), _roues({r,r,r,r}) {}
+    ~Vehicule(){}
+    //...
+    virtual void tourner (const Direction & x = Direction::Gauche) {...} 
+};
+
+```c++
+que l' rédéfinit dans la classe fille
+
+class Tank : public Vehicule {
+public:
+      Tank(const Moteur & m, const Roue & r): Vehicule(m,r) {}
+
+      virtual void tourner (const Direction & x = Direction::Gauche) {...}
+};
+
+```
