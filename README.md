@@ -5,14 +5,14 @@ Le C++ comporte plusieurs paradigmes de programmation : *imperatif* , *orienté 
 Aujourd'hui nous allons nous intéresser à l'aspect orienté objet. La POO est fondé sur 3 principes de base :  
  - l'*encapsulation*, 
  - l' *héritage*, 
- - het le *polymorphisme*.
+ - le *polymorphisme*.
 
 Encapsulation
 ----------------
 Dans un contexte de programmation impérative, on implémente des procédures qui agissent «par effet de bords» 
 sur des structures de données, par exemple
     
-
+```c++
     void computeSum(vector<int> &x, int & sum)
     {
        sum = 0; 
@@ -26,14 +26,14 @@ sur des structures de données, par exemple
     int s;
     computeSum(z, s);
     assert(s == 6);
-
+```
 
 Un problème de l'utilisation de ce genre de fonction est que l'on doit associer manuellement les structures de données et 
 les algorithmes qui agissent dessus. L'*encapsulation* est là pour résoudre ce genre de problème : on va regrouper 
 au sein d'une même **classe** les structures de données (les *attributs* ou *membres* ) et les algorithmes (**méthodes**). 
 Ainsi imaginons la classe suivante
 
-
+```c++
     class monTableau {
         vector<int> data;
         public:
@@ -44,7 +44,7 @@ Ainsi imaginons la classe suivante
     //....
     monTableau z({1, 2, 3});
     assert( z.computeSum() == 6);
-
+```
 
 On voit apparaître plusieurs choses bizarres :
  - une fonction  - en realité une **méthode** - porte le même nom que la classe. Elle permet de construire une _instance_ 
@@ -58,7 +58,8 @@ On voit au sein de cet exemple que l'usager n'a pas à connaître la structure d
 la somme. L'encapsulation permet de créer une _interface_ que l'utilisateur de la classe va utiliser sans intervenir directement
 sur les structures de données internes. Ceci renforce la _modularité_ du code ainsi obtenu : on peut changer l'interieur d'une 
 classe sans en changer l'interface (par exemple, pour optimiser les algorithmes internes), le code qui en dépend n'aura pas à etre modifié 
-## Exercice 
+
+### Exercice 
 Ecrire une classe `chaine` qui prend un `const char *` pour le constructeur et le stocke dans un `vector<char>`. On écrira 
 une méthode concat qui prend la chaine une autre chaine en argument et qui renvoie la chaine concaténé avec la chaine courante
 
@@ -71,7 +72,7 @@ du point de vue de ce que l'on souhaite modèliser dans le langage
 Prenons un exemple simple. On veut simuler des véhicules : par exemple des voitures, des camions et des tanks.
 On peut imaginer faire une classe de base comme ceci
 
-     
+```c++     
      class Vehicule {
       Moteur _m  
       array<Roue, 4> _roues;
@@ -81,6 +82,7 @@ On peut imaginer faire une classe de base comme ceci
           void demarrer()  {...}
           void arreter() {...}
      }
+```
 
 On peut factoriser dans cette classe les attributs et les méthodes que doivent partager les voitures, les camions et les tanks.
 Ainsi la classe camion pour correspondre  à 

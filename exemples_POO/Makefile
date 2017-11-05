@@ -6,9 +6,12 @@
 CXX=g++ -std=c++11
 # name of Pdf File 
 
-all: polymorphisme
+all: polymorphisme monTableau
 
 polymorphisme: polymorphisme.cpp
+	$(CXX) -o $@ $<
+
+monTableau: monTableau.cpp
 	$(CXX) -o $@ $<
 
 # Nettoie le repertoire
