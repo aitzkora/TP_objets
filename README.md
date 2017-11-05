@@ -98,7 +98,7 @@ Ainsi la classe camion pour correspondre  à
 ```
 
 On pourra lorsque qu'on crée un camion, appeler les méthode suivantes
-
+```c++
      Moteur m(12);
      Roue r("bibendum");
      Benne b("à ordures");
@@ -106,17 +106,17 @@ On pourra lorsque qu'on crée un camion, appeler les méthode suivantes
      monCamion.demarrer() // OK
      monCamion.dechargerLaBenne(); // OK
      monCamion.arreter() //OK
-
+```
 par contre un objet `Vehicule` ne pourrait pas appeler `dechargerLaBenne` puisque qu'elle est définie seulement dans la classe
 fille
-
+```c++
      Moteur m(42);
      Roue r("bibendum");
      Vehicule monVehicule(m,r);
      monVehicule.demarrer() // OK
      monVehicule.arreter() //OK
      monVehicule.dechargerLaBenne(); // Erreur
-
+```
 Polymorphisme
 -------------
 Le polymorphisme est le troisième principe de base de la POO. Il permet a une même méthode d'avoir une implémentation différente dans des classes 
@@ -135,17 +135,40 @@ public:
     Vehicule(const Moteur & m, const Roue & r) : _m(m), _roues({r,r,r,r}) {}
     ~Vehicule(){}
     //...
-    virtual void tourner (const Direction & x = Direction::Gauche) {...} 
+    virtual void tourner (const Direction & x = Direction::Gauche) { 
+      cout << "vehicule tourne" << endl; }
 };
 
-```c++
+```
 que l' rédéfinit dans la classe fille
 
+```c++
 class Tank : public Vehicule {
 public:
       Tank(const Moteur & m, const Roue & r): Vehicule(m,r) {}
 
-      virtual void tourner (const Direction & x = Direction::Gauche) {...}
+      virtual void tourner (const Direction & x = Direction::Gauche) {
+      cout << "tank tourne" << endl;
+      }
 };
 
 ```
+### Question
+Que va afficher le code suivant
+```c++
+class Moteur {};
+class Roue {};
+Moteur m;
+Roue chenilles;
+Tank t(m,chenilles);
+Vehicule * v  = & t;
+t->tourner();
+```
+La maitrise de l'héritage et du polymorphisme est nécessaire pour écrire des codes complexes et modulaires faisant intervernir
+un nombre important de classes. Dans un premier temps, il est important de bien saisir la notion d'encapsulation afin
+de pouvoir écrire ses premières classes. Dans ce but, nous allons écrire un code d'équation de la chaleur en différences finies.
+
+
+Pour aller plus loin 
+==================== 
+- Introduction aux objets par b. garcia http://www.bruno-garcia.net/www/Cours/
