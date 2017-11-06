@@ -1,0 +1,74 @@
+* Équation de la chaleur
+ Le but de ce TP est d'écrire une classe en C++ qui simulera l'équation de la chaleur sur un carré.
+** Aspect mathématique 
+ L'équation que l'on souhaite résoudre est la suivante
+
+    \frac{\partial u(x,t) }{\partial t} - \Delta u(x,t) = 0 
+    u(x,t) = 1 \forall {x} \in \partial [0,1]^2. 
+
+pour $t \in [0,T]$. En discretisant
+
+    \frac{\partial u}{\partial t}({\bf x},t_k) \approx \frac{u({\bf x}, t_k + dt) - u({\bf x}, t_k)}{dt},
+et
+   
+   \Delta u(x,y,t) & \approx & \frac{u(x-h_x, y,t) + u(x+ h_x, y,t) - 2 u(x,y,t)}{h_x^2} \\
+              & + & \frac{u(x, y-h_y,t) + u(x, y + h_y,t) - 2 u(x,y,t)}{h_y^2}, 
+
+   U^{n+1}_{i,j} =  w_x \left[U^n_{i-1, j} + U^n_{i+1, j} \right] + w_y \left[U^n_{i,j-1} + U^n_{i, j+1} \right] + d U^n_{i,j} 
+
+   $\forall (i,j) \in \{1..n_x-1\}\times\{1..n_y-1\}$ with 
+avec $w_x = \frac{dt}{h_x^2}$ et  $w_y = \frac{dt}{h_y^2}$ et $ d=1 - 2 w_x - 2 w_y$
+$$
+  
+  Pour cela on aimerait avoir un programme principal du genre
+#begin_src c++
+#include "Chaleur.hpp"
+
+int main(int argc, char * argv[])
+{
+    if (argc < 3)
+    {
+        std::cerr << "usage "  <<argv[0] << " maxIt prec" << std::endl;
+    }
+    int maxIt = std::atoi(argv[1]);
+    double eps = std::atof(argv[2]);
+    Chaleur poeleACharbon(1., 1., 100, 100);
+    poeleACharbon.initialise(1.0);
+    poeleACharbon.resout(maxIt, eps);
+    return 0;
+}
+#end_src
+
+La classe ~Chaleur~ aura donc _a minima_ l'interface suivante
+#begin_src c++
+class Chaleur {
+    public:
+        Chaleur(double deltaX, double deltaY, int dimX, int dim, double dt);
+        ~Chaleur();
+        int resout(int maxIt, double eps);
+        void initialise(double valSurLeBord);
+};
+#end_src
+On pourra encoder l'etat de la solution courante de plusieurs façons : 
+- soit un double * , qu'il faudra allouer dans le constructeur et liberer dans le destructeur
+#begin_src c++
+Chaleur::Chaleur(...)
+{
+...
+_sol =  new double [_dimX * _dimY];
+...
+}
+
+Chaleur::~Chaleur()
+{
+delete [] _sol;
+}
+#end_src
+- soit un vector<double> de la STL
+Dans les deux cas, on aura interet a utiliser un stockage plat, car les pointeurs de pointeurs sont lents en mémoire et
+les tableaux bidimensionels `double [DIM1][DIM2]` nécessitent quand a eux de connaître leur taille à la compilation
+
+On aura d'ailleurs interet a stocker les deux etats succesifs `X_n` et `X_n+1` de la solutions dans 2 tableaux differents
+dont on pourra faire une copie simple grâce à la fonction `std::copy_n`, par exemple
+
+On peut rajouter des méthodes internes, destinés a sauvegarder la solution à certains pas de temps et a calculer X_{n+1} en fonction de X_n
