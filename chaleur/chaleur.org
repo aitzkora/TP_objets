@@ -18,7 +18,9 @@ Par conséquent
    U^{n+1}_{i,j} =  w_x \left[U^n_{i-1, j} + U^n_{i+1, j} \right] + w_y \left[U^n_{i,j-1} + U^n_{i, j+1} \right] + d U^n_{i,j} 
 
    \forall (i,j) \in \{1..n_x-1\}\times\{1..n_y-1\} 
-avec $w_x = \frac{dt}{h_x^2}$ et  $w_y = \frac{dt}{h_y^2}$ et  d=1 - 2 w_x - 2 w_y$
+avec 
+
+   w_x = \frac{dt}{h_x^2} \qquad,  w_y = \frac{dt}{h_y^2} ,\qquad  d=1 - 2 w_x - 2 w_y
 
   
   Pour cela on aimerait avoir un programme principal du genre
