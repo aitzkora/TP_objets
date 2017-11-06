@@ -1,20 +1,22 @@
 #+OPTIONS: tex:t
 * Équation de la chaleur
  Le but de ce TP est d'écrire une classe en C++ qui simulera l'équation de la chaleur sur un carré.
-** Aspect mathématique 
+** Prolégomène mathématique
  L'équation que l'on souhaite résoudre est la suivante
 
-  \partial_{t} u(x,t) - \Delta u(x,t) = 0 
+  \partial_{t} u(x,t) = \Delta u(x,t)
 
-avec les conditions aux bord
+avec les conditions aux bords
 
-   u(x,t) = 1 \forall x \in \partial [0,1]^2. 
+   u(x,t) = 1 
 
-En discretisant la dérivée en temps a l'ordre 1
+sur le domaine spatial [0,1]^2  et temporel [0,T]
+
+En discretisant la dérivée en temps a l'ordre 1 par
 
    \partial_{t} u(x,t_{k}) \approx (u(x, t_{k} + dt) - u(x, t_{k}))/dt
 
-et avec un DL pour estimer le laplacien
+et le laplacien grâce à
    
    \Delta u(x,y,t)  \approx  (u(x-h_{x}, y,t) + u(x+ h_{x}, y,t) - 2 
    u(x,y,t))/h_{x}^{2} + (u(x, y-h_{y},t) + u(x, y + h_{y},t) - 2 u(x,y,t))/h_{y}^{2}, 
@@ -24,30 +26,40 @@ On obtient la mise-à-jour matricielle suivante
    U^{n+1}_{i,j} =  w_{x} (U^{n}_{i-1, j} + U^{n}_{i+1, j} ) + w_{y} 
    (U^{n}_{i,j-1} + U^{n}_{i, j+1}) + d U^{n}_{i,j} 
 
-avec pour
+ou les poids sont définis comme suit
 
    w_{x} = dt/h_{x}^{2} ,  w_y = dt/h_{y}^{2}  et  d = 1 - 2 w_{x} - 2 w_{y}
-  
+
+** Programme principal
   Pour cela on aimerait avoir un programme principal du genre
 #+begin_src c++
 #include "Chaleur.hpp"
+#include <iostream>
 
+using namespace std;
 int main(int argc, char * argv[])
 {
-    if (argc < 3)
-    {
-        std::cerr << "usage "  <<argv[0] << " maxIt prec" << std::endl;
-    }
-    int maxIt = std::atoi(argv[1]);
-    double eps = std::atof(argv[2]);
-    Chaleur poeleACharbon(1., 1., 100, 100);
-    poeleACharbon.initialise(1.0);
-    poeleACharbon.resout(maxIt, eps);
-    return 0;
+   if (argc < 4)
+   {
+     cerr << "usage "  <<argv[0] << " Nx Ny  maxIt prec" << endl;
+     return -1;
+   }
+   int Nx = atoi(argv[1]);
+   int Ny = atoi(argv[2]);
+   double hx = 1. / Nx;
+   double hy = 1. / Ny;
+   double dt = min ( hx * hx / 4., hy * hy / 4.);
+   int maxIt = atoi(argv[3]);
+   double eps = atof(argv[4]);
+   
+   Chaleur poeleACharbon(hx, hy, Nx+2 , Ny + 2, dt);
+   poeleACharbon.initialise(1.0);
+   poeleACharbon.resout(maxIt, eps);
+   return 0;
 }
 #+end_src
 
-La classe ~Chaleur~ aura donc _a minima_ l'interface suivante
+La classe ~Chaleur~ aura donc /a minima/ l'interface suivante
 #+begin_src c++
 class Chaleur {
     public:
@@ -57,8 +69,19 @@ class Chaleur {
         void initialise(double valSurLeBord);
 };
 #+end_src
-On pourra encoder l'etat de la solution courante de plusieurs façons : 
-- soit un double * , qu'il faudra allouer dans le constructeur et liberer dans le destructeur
+
+La méthode =resout= implémentera la boucle en temps limitée par un nombre max 
+d'itérations et une précision donée
+
+La méthode =initialise= se contentera quand a elle de mettre une valeur 
+constante sur le bord du carré et zero partout ailleurs.
+** Implémentation interne
+  La spécification de l'interface ne précise évidemment pas comment implanter 
+  les itérées succésifs des solutions. Pour cela on peut utiliser plusieurs 
+  méthodes
+*** les pointeurs
+  On alloue un =double*= de la taille de la grille (tailleX * tailleY) dans le 
+  constructeur
 #+begin_src c++
 Chaleur::Chaleur(...)
 {
@@ -72,11 +95,39 @@ Chaleur::~Chaleur()
 delete [] _sol;
 }
 #+end_src
-- soit un vector<double> de la STL
-Dans les deux cas, on aura interet a utiliser un stockage plat, car les pointeurs de pointeurs sont lents en mémoire et
-les tableaux bidimensionels `double [DIM1][DIM2]` nécessitent quand a eux de connaître leur taille à la compilation
 
-On aura d'ailleurs interet a stocker les deux etats succesifs `X_n` et `X_n+1` de la solutions dans 2 tableaux differents
-dont on pourra faire une copie simple grâce à la fonction `std::copy_n`, par exemple
+*** soit un vector<double> de la STL
+#+begin_src c++
+std::vector<double> _sol;
+#+end_src
+*** Stockage plat
+Dans les deux cas, on aura interet a utiliser un stockage plat, car les 
+pointeurs de pointeurs ou les vecteurs de vecteurs sont lents en mémoire 
+et les tableaux bidimensionels `double [DIM1][DIM2]` nécessitent quand a eux de 
+connaître leur taille à la compilation
+** Sauvegarde de la solution
+   Suivant un nombre régulier d'opérations, on pourra sauvegarder la solution 
+   dans un fichier vtk en utilisant le preambule suivant
+#+begin_src c++
+void Chaleur::sauveSolution(string nomFichier)
+{
+  ofstream file;
+  file.open(nomFichier, ios::out);
 
-On peut rajouter des méthodes internes, destinés a sauvegarder la solution à certains pas de temps et a calculer X_{n+1} en fonction de X_n
+  file << "# vtk DataFile Version 3.0" << endl;
+  file << "cell" << endl;
+  file << "ASCII" << endl;
+  file << "DATASET STRUCTURED_POINTS" << endl;
+  file << "DIMENSIONS " << _dimX << " " << _dimY << " " << 1 << endl;
+  file << "ORIGIN " << 0 << " " << 0 << " " << 0 << endl;
+  file << "SPACING " << 1.0 << " " << 1.0 << " " << 1 << endl;;
+  file << "POINT_DATA " << _dimX*_dimY << endl;
+  file << "SCALARS cell float" << endl;
+  file << "LOOKUP_TABLE default" << endl;
+ 
+  // rajouter ici l'écriture des données
+  // qui peuvent être écrites directement sur une seule ligne
+
+  file << endl;
+  file.close();
+}#end_src 
