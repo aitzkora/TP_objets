@@ -4,7 +4,7 @@
 ** Aspect mathématique 
  L'équation que l'on souhaite résoudre est la suivante
 
-    \partial_t u(x,t) - \Delta u(x,t) = 0 
+  H_t u(x,t) - \Delta u(x,t) = 0 
 avec les conditions aux bord
     u(x,t) = 1 \forall x \in \partial [0,1]^2. 
 
@@ -13,7 +13,7 @@ En discretisant
     \partial_t u(x,t_k) \approx (u(x, t_k + dt) - u(x, t_k))/dt
 et
    
-   \Delta u(x,y,t)  \approx & \frac{u(x-h_x, y,t) + u(x+ h_x, y,t) - 2 u(x,y,t)}{h_x^2} 
+   \Delta u(x,y,t)  \approx  \frac{u(x-h_x, y,t) + u(x+ h_x, y,t) - 2 u(x,y,t)}{h_x^2} 
                + \frac{u(x, y-h_y,t) + u(x, y + h_y,t) - 2 u(x,y,t)}{h_y^2}, 
 Par conséquent
 
