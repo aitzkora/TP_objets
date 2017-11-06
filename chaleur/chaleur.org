@@ -12,20 +12,22 @@ avec les conditions aux bord
 
 En discretisant
 
-   \partial_t u(x,t_k) \approx (u(x, t_k + dt) - u(x, t_k))/dt
+   \partial_{t} u(x,t_{k}) \approx (u(x, t_{k} + dt) - u(x, t_{k}))/dt
 
 et
    
-   \Delta u(x,y,t)  \approx  \frac{u(x-h_x, y,t) + u(x+ h_x, y,t) - 2 u(x,y,t)}{h_x^2} 
-               + \frac{u(x, y-h_y,t) + u(x, y + h_y,t) - 2 u(x,y,t)}{h_y^2}, 
+   \Delta u(x,y,t)  \approx  \frac{u(x-h_{x}, y,t) + u(x+ h_{x}, y,t) - 2 
+   u(x,y,t)}{h_{x}^{2}} 
+               + \frac{u(x, y-h_{y},t) + u(x, y + h_{y},t) - 2 
+                 u(x,y,t)}{h_{y}^{2}}, 
 Par conséquent
 
-   U^{n+1}_{i,j} =  w_x (U^n_{i-1, j} + U^n_{i+1, j} ) + w_y (U^n_{i,j-1} + U^n_{i, j+1}) + d U^n_{i,j} 
+   U^{n+1}_{i,j} =  w_{x} (U^{n}_{i-1, j} + U^{n}_{i+1, j} ) + w_{y} 
+   (U^{n}_{i,j-1} + U^{n}_{i, j+1}) + d U^{n}_{i,j} 
 
 avec pour
 
-   w_x = \frac{dt}{h_x^2} \qquad,  w_y = \frac{dt}{h_y^2} ,\qquad  d=1 - 2 w_x - 2 w_y
-
+   w_{x} = dt/h_{x}^{2} \qquad,  w_y = dt/h_{y}^{2} ,\qquad  d=1 - 2 w_{x} - 2 w_{y}
   
   Pour cela on aimerait avoir un programme principal du genre
 #begin_src c++
