@@ -10,27 +10,26 @@ avec les conditions aux bord
 
    u(x,t) = 1 \forall x \in \partial [0,1]^2. 
 
-En discretisant
+En discretisant la dérivée en temps a l'ordre 1
 
    \partial_{t} u(x,t_{k}) \approx (u(x, t_{k} + dt) - u(x, t_{k}))/dt
 
-et
+et avec un DL pour estimer le laplacien
    
-   \Delta u(x,y,t)  \approx  \frac{u(x-h_{x}, y,t) + u(x+ h_{x}, y,t) - 2 
-   u(x,y,t)}{h_{x}^{2}} 
-               + \frac{u(x, y-h_{y},t) + u(x, y + h_{y},t) - 2 
-                 u(x,y,t)}{h_{y}^{2}}, 
-Par conséquent
+   \Delta u(x,y,t)  \approx  (u(x-h_{x}, y,t) + u(x+ h_{x}, y,t) - 2 
+   u(x,y,t))/h_{x}^{2} + (u(x, y-h_{y},t) + u(x, y + h_{y},t) - 2 u(x,y,t))/h_{y}^{2}, 
+
+On obtient la mise-à-jour matricielle suivante
 
    U^{n+1}_{i,j} =  w_{x} (U^{n}_{i-1, j} + U^{n}_{i+1, j} ) + w_{y} 
    (U^{n}_{i,j-1} + U^{n}_{i, j+1}) + d U^{n}_{i,j} 
 
 avec pour
 
-   w_{x} = dt/h_{x}^{2} \qquad,  w_y = dt/h_{y}^{2} ,\qquad  d=1 - 2 w_{x} - 2 w_{y}
+   w_{x} = dt/h_{x}^{2} ,  w_y = dt/h_{y}^{2}  et  d = 1 - 2 w_{x} - 2 w_{y}
   
   Pour cela on aimerait avoir un programme principal du genre
-#begin_src c++
+#+begin_src c++
 #include "Chaleur.hpp"
 
 int main(int argc, char * argv[])
@@ -46,10 +45,10 @@ int main(int argc, char * argv[])
     poeleACharbon.resout(maxIt, eps);
     return 0;
 }
-#end_src
+#+end_src
 
 La classe ~Chaleur~ aura donc _a minima_ l'interface suivante
-#begin_src c++
+#+begin_src c++
 class Chaleur {
     public:
         Chaleur(double deltaX, double deltaY, int dimX, int dim, double dt);
@@ -57,10 +56,10 @@ class Chaleur {
         int resout(int maxIt, double eps);
         void initialise(double valSurLeBord);
 };
-#end_src
+#+end_src
 On pourra encoder l'etat de la solution courante de plusieurs façons : 
 - soit un double * , qu'il faudra allouer dans le constructeur et liberer dans le destructeur
-#begin_src c++
+#+begin_src c++
 Chaleur::Chaleur(...)
 {
 ...
@@ -72,7 +71,7 @@ Chaleur::~Chaleur()
 {
 delete [] _sol;
 }
-#end_src
+#+end_src
 - soit un vector<double> de la STL
 Dans les deux cas, on aura interet a utiliser un stockage plat, car les pointeurs de pointeurs sont lents en mémoire et
 les tableaux bidimensionels `double [DIM1][DIM2]` nécessitent quand a eux de connaître leur taille à la compilation
@@ -81,4 +80,3 @@ On aura d'ailleurs interet a stocker les deux etats succesifs `X_n` et `X_n+1` d
 dont on pourra faire une copie simple grâce à la fonction `std::copy_n`, par exemple
 
 On peut rajouter des méthodes internes, destinés a sauvegarder la solution à certains pas de temps et a calculer X_{n+1} en fonction de X_n
-** 
