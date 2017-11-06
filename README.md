@@ -164,11 +164,12 @@ Tank t(m,chenilles);
 Vehicule * v  = & t;
 t->tourner();
 ```
-La maitrise de l'héritage et du polymorphisme est nécessaire pour écrire des codes complexes et modulaires faisant intervernir
-un nombre important de classes. Dans un premier temps, il est important de bien saisir la notion d'encapsulation afin
-de pouvoir écrire ses premières classes. Dans ce but, nous allons écrire un code d'équation de la chaleur en différences finies.
+La maitrise de l'héritage et du polymorphisme est nécessaire pour écrire des codes complexes et modulaires 
+faisant intervernir un nombre important de classes. Dans un premier temps, il est important de 
+bien saisir la notion d'encapsulation afin de pouvoir écrire ses premières classes. Afin d'illustrer ce premier
+concept nous allons écrire un code d'équation de la chaleur en différences finies (https://github.com/aitzkora/TP_objets/blob/master/chaleur/chaleur.org)
 
 
 Pour aller plus loin 
 ==================== 
-- Introduction aux objets par b. garcia http://www.bruno-garcia.net/www/Cours/
+- Introduction aux objets (http://www.bruno-garcia.net/www/Cours/) par B.L. Garcia (†)
