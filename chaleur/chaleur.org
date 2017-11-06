@@ -91,7 +91,7 @@ Chaleur::Chaleur(double deltaX, double deltaY, int dimX, int dimY, double dt):
 #+end_src
 Notons que ce code est quasi équivalent à
 #+begin_src c++
-Chaleur::Chaleur(double deltaX, double deltaY, int dimX, int dimY, double dt):
+Chaleur::Chaleur(double deltaX, double deltaY, int dimX, int dimY, double dt)
 {
   _deltaX = deltaX
   _deltaY = deltaY,
@@ -101,11 +101,12 @@ Chaleur::Chaleur(double deltaX, double deltaY, int dimX, int dimY, double dt):
 }
 #+end_src
 Dans le deuxieme cas on parle d'affectation et pas d'initialisation. Pour des 
-types non-atomiques, il y a une grosse difference, ici ce n'est pas très 
+types non-atomiques, il y a une grosse difference, mais ici ce n'est pas très 
 important...
+
 *** Méthode de résolution
-La méthode =resout= implémentera la boucle en temps limitée par un nombre max 
-d'itérations et une précision donnée. On pourra utiliser une boucle =while=
+La méthode =resout= implémentera la boucle en temps limitée par un nombre 
+maximum d'itérations et une précision donnée. On pourra utiliser une boucle =while=
 #+begin_src c++
 int Chaleur::resout(int maxIt, double eps)
 {
@@ -182,4 +183,5 @@ void Chaleur::sauveSolution(string nomFichier)
 
   file << endl;
   file.close();
-}#end_src 
+}
+#+end_src 
