@@ -4,7 +4,7 @@
 ** Aspect mathématique 
  L'équation que l'on souhaite résoudre est la suivante
 
-  \partial _t u(x,t) - \Delta u(x,t) = 0 
+  \partial_{t} u(x,t) - \Delta u(x,t) = 0 
 
 avec les conditions aux bord
 
