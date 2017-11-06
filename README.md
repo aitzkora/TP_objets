@@ -140,7 +140,7 @@ public:
 };
 
 ```
-que l'on rédéfinit dans la_ classe fille_
+que l'on rédéfinit dans la _classe-fille_
 
 ```c++
 class Tank : public Vehicule {
