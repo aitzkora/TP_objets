@@ -58,6 +58,11 @@ int main(int argc, char * argv[])
    return 0;
 }
 #+end_src
+Après compilation, on pourrait appeler un tel programme avec la ligne de 
+commande suivante
+#+begin_src shell
+./chaleur 100 100 1000 1e-6
+#+end_src
 
 La classe ~Chaleur~ aura donc /a minima/ l'interface suivante
 #+begin_src c++
@@ -70,11 +75,57 @@ class Chaleur {
 };
 #+end_src
 
-La méthode =resout= implémentera la boucle en temps limitée par un nombre max 
-d'itérations et une précision donée
+***Constructeur
+On pourra définir affecter les membres dans le constructeur grâce à une /liste d'initalisation/
 
-La méthode =initialise= se contentera quand a elle de mettre une valeur 
-constante sur le bord du carré et zero partout ailleurs.
+#+begin_src c++
+Chaleur::Chaleur(double deltaX, double deltaY, int dimX, int dimY, double dt):
+     _deltaX(deltaX),
+     _deltaY(deltaY),
+     _dimX(dimX),
+     _dimY(dimY),
+     _dt(dt)
+{
+  //blah
+}
+#+end_src
+Notons que ce code est quasi équivalent à
+#+begin_src c++
+Chaleur::Chaleur(double deltaX, double deltaY, int dimX, int dimY, double dt):
+{
+  _deltaX = deltaX
+  _deltaY = deltaY,
+  _dimX = dimX,    
+  _dimY = dimY,
+  _dt = dt
+}
+#+end_src
+Dans le deuxieme cas on parle d'affectation et pas d'initialisation. Pour des 
+types non-atomiques, il y a une grosse difference, ici ce n'est pas très 
+important...
+*** Méthode de résolution
+La méthode =resout= implémentera la boucle en temps limitée par un nombre max 
+d'itérations et une précision donnée. On pourra utiliser une boucle =while=
+
+int Chaleur::resout(int maxIt, double eps)
+{
+  int iter = 0;
+  double err = 100;
+  // boucle en temps
+  while ((iter < maxIt) && (err > eps))
+  {
+    // mise-a-jour en espace
+  }
+  return iter;
+}
+Pour simplifier l'ecriture de la méthode =resout= on pourra écrire une méthode 
+interne qui calcule l'iteréé suivante =_solNp1= à partir de de =_solN=
+ainsi que l'erreur entre ces deux iterées
+
+  e_{i} = \sqrt ( \sum_{i,j} (U^{n+1}_{i,j} -U^{n}_{i,j} )^{2})
+ 
+La méthode =initialise= se contentera quant à elle de mettre une valeur
+constante sur le bord du carré et zéro partout ailleurs.
 ** Implémentation interne
   La spécification de l'interface ne précise évidemment pas comment implanter 
   les itérées succésifs des solutions. Pour cela on peut utiliser plusieurs 
