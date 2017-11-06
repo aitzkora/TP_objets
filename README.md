@@ -1,10 +1,10 @@
 Introduction à la Programmation Orienté Objet (POO)
 ===================================================
 Le C++ comporte plusieurs paradigmes de programmation : *imperatif* , *orienté objet*, *générique* et même
-*fonctionel*(depuis c++11)
+*fonctionel *(depuis c++11)
 Aujourd'hui nous allons nous intéresser à l'aspect orienté objet. La POO est fondé sur 3 principes de base :  
  - l'*encapsulation*, 
- - l' *héritage*, 
+ - l'*héritage*, 
  - le *polymorphisme*.
 
 Encapsulation
@@ -59,7 +59,7 @@ la somme. L'encapsulation permet de créer une _interface_ que l'utilisateur de 
 sur les structures de données internes. Ceci renforce la _modularité_ du code ainsi obtenu : on peut changer l'interieur d'une 
 classe sans en changer l'interface (par exemple, pour optimiser les algorithmes internes), le code qui en dépend n'aura pas à etre modifié 
 
-### Exercice 
+### Exercice (pour la maison)
 Ecrire une classe `chaine` qui prend un `const char *` pour le constructeur et le stocke dans un `vector<char>`. On écrira 
 une méthode concat qui prend la chaine une autre chaine en argument et qui renvoie la chaine concaténé avec la chaine courante
 
@@ -140,7 +140,7 @@ public:
 };
 
 ```
-que l' rédéfinit dans la classe fille
+que l'on rédéfinit dans la_ classe fille_
 
 ```c++
 class Tank : public Vehicule {
@@ -164,11 +164,15 @@ Tank t(m,chenilles);
 Vehicule * v  = & t;
 t->tourner();
 ```
+«tank tourne» ou «vehicule tourne » ?
+
+Conclusion
+----------
+
 La maitrise de l'héritage et du polymorphisme est nécessaire pour écrire des codes complexes et modulaires 
 faisant intervernir un nombre important de classes. Dans un premier temps, il est important de 
 bien saisir la notion d'encapsulation afin de pouvoir écrire ses premières classes. Afin d'illustrer ce premier
 concept nous allons écrire un code d'équation de la chaleur en différences finies (https://github.com/aitzkora/TP_objets/blob/master/chaleur/chaleur.org)
-
 
 Pour aller plus loin 
 ==================== 
