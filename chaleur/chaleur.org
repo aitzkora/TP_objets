@@ -8,17 +8,18 @@
 
 pour $t \in [0,T]$. En discretisant
 
-    \frac{\partial u}{\partial t}({\bf x},t_k) \approx \frac{u({\bf x}, t_k + dt) - u({\bf x}, t_k)}{dt},
+    \frac{\partial u}{\partial t}({\bf x},t_k) \approx \frac{u({\bf x}, t_k + dt) - u({\bf x}, t_k)}{dt}
 et
    
-   \Delta u(x,y,t) & \approx & \frac{u(x-h_x, y,t) + u(x+ h_x, y,t) - 2 u(x,y,t)}{h_x^2} \\
-              & + & \frac{u(x, y-h_y,t) + u(x, y + h_y,t) - 2 u(x,y,t)}{h_y^2}, 
+   \Delta u(x,y,t)  \approx & \frac{u(x-h_x, y,t) + u(x+ h_x, y,t) - 2 u(x,y,t)}{h_x^2} 
+               + \frac{u(x, y-h_y,t) + u(x, y + h_y,t) - 2 u(x,y,t)}{h_y^2}, 
+Par conséquent
 
    U^{n+1}_{i,j} =  w_x \left[U^n_{i-1, j} + U^n_{i+1, j} \right] + w_y \left[U^n_{i,j-1} + U^n_{i, j+1} \right] + d U^n_{i,j} 
 
-   $\forall (i,j) \in \{1..n_x-1\}\times\{1..n_y-1\}$ with 
-avec $w_x = \frac{dt}{h_x^2}$ et  $w_y = \frac{dt}{h_y^2}$ et $ d=1 - 2 w_x - 2 w_y$
-$$
+   \forall (i,j) \in \{1..n_x-1\}\times\{1..n_y-1\} 
+avec $w_x = \frac{dt}{h_x^2}$ et  $w_y = \frac{dt}{h_y^2}$ et  d=1 - 2 w_x - 2 w_y$
+
   
   Pour cela on aimerait avoir un programme principal du genre
 #begin_src c++
@@ -72,3 +73,4 @@ On aura d'ailleurs interet a stocker les deux etats succesifs `X_n` et `X_n+1` d
 dont on pourra faire une copie simple grâce à la fonction `std::copy_n`, par exemple
 
 On peut rajouter des méthodes internes, destinés a sauvegarder la solution à certains pas de temps et a calculer X_{n+1} en fonction de X_n
+** 
