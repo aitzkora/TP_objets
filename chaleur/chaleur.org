@@ -28,7 +28,7 @@ On obtient la mise-à-jour matricielle suivante
 
 ou les poids sont définis comme suit
 
-   w_{x} = dt/h_{x}^{2} ,  w_y = dt/h_{y}^{2}  et  d = 1 - 2 w_{x} - 2 w_{y}
+   w_{x} = dt/h_{x}^{2} ,  w_{y} = dt/h_{y}^{2}  et  d = 1 - 2 w_{x} - 2 w_{y}
 
 ** Programme principal
   Pour cela on aimerait avoir un programme principal du genre
@@ -75,7 +75,7 @@ class Chaleur {
 };
 #+end_src
 
-***Constructeur
+*** Constructeur
 On pourra définir affecter les membres dans le constructeur grâce à une /liste d'initalisation/
 
 #+begin_src c++
@@ -106,7 +106,7 @@ important...
 *** Méthode de résolution
 La méthode =resout= implémentera la boucle en temps limitée par un nombre max 
 d'itérations et une précision donnée. On pourra utiliser une boucle =while=
-
+#+begin_src c++
 int Chaleur::resout(int maxIt, double eps)
 {
   int iter = 0;
@@ -118,6 +118,7 @@ int Chaleur::resout(int maxIt, double eps)
   }
   return iter;
 }
+#+end_src
 Pour simplifier l'ecriture de la méthode =resout= on pourra écrire une méthode 
 interne qui calcule l'iteréé suivante =_solNp1= à partir de de =_solN=
 ainsi que l'erreur entre ces deux iterées
@@ -137,13 +138,13 @@ constante sur le bord du carré et zéro partout ailleurs.
 Chaleur::Chaleur(...)
 {
 ...
-_sol =  new double [_dimX * _dimY];
+   _sol =  new double [_dimX * _dimY];
 ...
 }
 
 Chaleur::~Chaleur()
 {
-delete [] _sol;
+    delete [] _sol;
 }
 #+end_src
 
