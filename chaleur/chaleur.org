@@ -4,13 +4,16 @@
 ** Aspect mathématique 
  L'équation que l'on souhaite résoudre est la suivante
 
-  H_t u(x,t) - \Delta u(x,t) = 0 
+  \partial _t u(x,t) - \Delta u(x,t) = 0 
+
 avec les conditions aux bord
-    u(x,t) = 1 \forall x \in \partial [0,1]^2. 
+
+   u(x,t) = 1 \forall x \in \partial [0,1]^2. 
 
 En discretisant
 
-    \partial_t u(x,t_k) \approx (u(x, t_k + dt) - u(x, t_k))/dt
+   \partial_t u(x,t_k) \approx (u(x, t_k + dt) - u(x, t_k))/dt
+
 et
    
    \Delta u(x,y,t)  \approx  \frac{u(x-h_x, y,t) + u(x+ h_x, y,t) - 2 u(x,y,t)}{h_x^2} 
@@ -19,7 +22,7 @@ Par conséquent
 
    U^{n+1}_{i,j} =  w_x (U^n_{i-1, j} + U^n_{i+1, j} ) + w_y (U^n_{i,j-1} + U^n_{i, j+1}) + d U^n_{i,j} 
 
-avec pour i=1,..,,n_x et \(j \in 1,....,n-y\)
+avec pour
 
    w_x = \frac{dt}{h_x^2} \qquad,  w_y = \frac{dt}{h_y^2} ,\qquad  d=1 - 2 w_x - 2 w_y
 
