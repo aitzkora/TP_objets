@@ -93,15 +93,15 @@ Notons que ce code est quasi équivalent à
 #+begin_src c++
 Chaleur::Chaleur(double deltaX, double deltaY, int dimX, int dimY, double dt)
 {
-  _deltaX = deltaX
-  _deltaY = deltaY,
-  _dimX = dimX,    
-  _dimY = dimY,
-  _dt = dt
+  _deltaX = deltaX;
+  _deltaY = deltaY;
+  _dimX = dimX;
+  _dimY = dimY;
+  _dt = dt;
 }
 #+end_src
 Dans le deuxieme cas on parle d'affectation et pas d'initialisation. Pour des 
-types non-atomiques, il y a une grosse difference, mais ici ce n'est pas très 
+types non-atomiques, il y a une grosse différence, mais ici ce n'est pas très 
 important...
 
 *** Méthode de résolution
